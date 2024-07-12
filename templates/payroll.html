@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>OSR</title>
+<link rel="stylesheet" href="templates/style.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+        }
+        .header {
+            background-color: #ffffff;
+            position: relative;
+            top: 10px;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            color: rgb(0, 0, 0);
+            border-bottom: 1px solid #080606; /* Bottom border for the header */
+        }
+        .header .logo {
+            font-size: 24px;
+            font-weight: bold;
+            flex: 1;
+        }
+        .nav {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+            display: flex;
+            justify-content: center;
+            flex: 2;
+            position: relative;
+            right: 120px;
+        }
+        .nav li {
+            display: inline;
+            margin: 0 15px;
+        }
+        .nav li a {
+            color: rgb(0, 0, 0);
+            text-decoration: none;
+            font-size: 18px;
+        }
+        .nav li a:hover {
+            text-decoration: underline;
+        }
+        .content {
+            position: absolute;
+            background-color: rgb(255, 253, 253);
+            border: #08060646 1px solid ;
+            padding: 5px;
+            width: 90vw;
+            left: 5%;
+            top: 90px;
+            height: 80vh;
+            border-radius: 8px;
+        }
+        .welcome{
+        position: relative;
+        text-align: center;
+        color: #081144;
+        }
+        .pcoded .card.full-card {
+position: fixed;
+top: 56px;
+z-index: 99999;
+-webkit-box-shadow: none;
+        box-shadow: none;
+left: 0;
+border-radius: 0;
+border: 1px solid #ddd;
+width: 100vw;
+height: calc(100vh - 56px); }
+.pcoded .card.full-card.card-load {
+    position: fixed; }
+.pcoded .card.card-load {
+position: relative;
+overflow: hidden; }
+.pcoded .card.card-load .card-loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    background-color: rgba(255, 255, 255, 0.7);
+    z-index: 999; }
+    .pcoded .card.card-load .card-loader i {
+    margin: 0 auto;
+    color: #ab7967;
+    font-size: 20px; }
+
+.card-header-text {
+margin-bottom: 0;
+font-size: 1rem;
+color: rgba(51, 51, 51, 0.85);
+font-weight: 600;
+display: inline-block;
+vertical-align: middle; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">OSR</div>
+        <ul class="nav">
+          <li>  <a href="{{ url_for('index') }}">dashboard</a><br> </li>
+          <li>  <a href="{{ url_for('students') }}">students</a><br> </li>
+          <li>  <a href="{{ url_for('teachers') }}">teachers</a><br> </li>
+          <li>  <a href="{{ url_for('results') }}">results</a><br> </li>
+          <li>  <a href="{{ url_for('fees') }}">fees</a><br> </li>
+          <li>  <a href="{{ url_for('finance') }}">finance</a><br> </li>
+          <li>  <a href="{{ url_for('payroll') }}">payroll</a><br> </li>
+          <li>  <a href="{{ url_for('users') }}">users</a><br> </li>
+       
+     
+          
+        </ul>
+    </div>
+   
+            </div>
+        </div>
+    </div>
+    </div>
+
+</body>
+</html>
