@@ -192,6 +192,26 @@ def students():
         flash("You don't have permission to access this page.")
         return redirect(url_for('index'))
 
+
+
+
+@app.route('/tstudents')
+def tstudents():
+    if 'username' in session:
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM students")
+        students = cursor.fetchall()
+        cursor.close()
+        conn.close()
+        return render_template('tstudents.html', students=students)
+    else:
+        flash("You don't have permission to access this page.")
+        return redirect(url_for('index'))
+
+
+
+
 @app.route('/edit_student/<id>', methods=['GET', 'POST'])
 def edit_student(id):
     if 'username' in session:
@@ -285,17 +305,114 @@ def add_result():
         if request.method == 'POST':
             # Handle adding a result
             flash("Result added successfully.")
-            return redirect(url_for('index'))
+            return redirect(url_for('tindex'))
         return render_template('add_result.html')
     else:
         flash("You don't have permission to access this page.")
-        return redirect(url_for('index'))
+        return redirect(url_for('tindex'))
     
 
 
-@app.route('/add_result')
-def result():
-    return render_template('add_result.html')
+
+@app.route('/results')
+def results():
+    return render_template('result.html')
+
+
+
+
+
+
+# marks 
+
+@app.route('/add_marks', methods=['POST'])
+def add_marks():
+    if 'username' in session and session['role'] == 'teacher':
+        subject = request.form['subject']
+        student_id = request.form['student']
+        marks = request.form['marks']
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("INSERT INTO marks (subject, student_id, marks) VALUES (%s, %s, %s)",
+                       (subject, student_id, marks))
+        conn.commit()
+        cursor.close()
+        conn.close()
+        flash('Marks added successfully!')
+        return redirect(url_for('tindex'))
+    else:
+        return redirect(url_for('login'))
+
+@app.route('/update_marks', methods=['POST'])
+def update_marks():
+    if 'username' in session and session['role'] == 'teacher':
+        subject = request.form['subject']
+        student_id = request.form['student']
+        marks = request.form['marks']
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("UPDATE marks SET marks = %s WHERE subject = %s AND student_id = %s",
+                       (marks, subject, student_id))
+        conn.commit()
+        cursor.close()
+        conn.close()
+        flash('Marks updated successfully!')
+        return redirect(url_for('tindex'))
+    else:
+        return redirect(url_for('login'))
+
+@app.route('/view_marks', methods=['POST'])
+def view_marks():
+    if 'username' in session and session['role'] == 'teacher':
+        subject = request.form['subject']
+        student_id = request.form['student']
+
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT marks FROM marks WHERE subject = %s AND student_id = %s",
+                       (subject, student_id))
+        marks = cursor.fetchone()
+        cursor.close()
+        conn.close()
+        if marks:
+            return render_template('view_marks.html', marks=marks['marks'])
+        else:
+            flash('No marks found for the selected student and subject.')
+            return redirect(url_for('tindex'))
+    else:
+        return redirect(url_for('login'))
+
+
+
+
+
+
+# results
+
+@app.route('/results')
+def results():
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT tracker, full_name, class, subject, marks FROM results ORDER BY id DESC LIMIT 4")
+    results = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return render_template('result.html', results=results)
+
+@app.route('/view_all_results')
+def view_all_results():
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT tracker, full_name, class, subject, marks FROM results ORDER BY id DESC")
+    results = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return render_template('result.html', results=results)
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
